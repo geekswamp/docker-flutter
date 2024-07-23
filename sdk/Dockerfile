@@ -10,23 +10,21 @@ LABEL org.opencontainers.image.description Flutter Docker image on Ubuntu Linux
 LABEL org.opencontainers.image.licenses MIT
 
 ENV DOCKER_USER flutter
-
-ENV FLUTTER_DIR /home/flutter-sdk
-RUN set -eux; mkdir -p ${FLUTTER_DIR}
-
+ENV FLUTTER_DIR /home/${DOCKER_USER}
 ENV PATH "$PATH:$FLUTTER_DIR/flutter/bin"
-WORKDIR ${FLUTTER_DIR}
 
 RUN set -eux; groupadd -r ${DOCKER_USER} \
   && useradd -r -g ${DOCKER_USER} ${DOCKER_USER}
 
 RUN set -eux; apt-get update && apt-get upgrade -y \ 
   && apt-get install clang cmake ninja-build pkg-config libgtk-3-dev -y --no-install-recommends \
-  && curl https://storage.googleapis.com/flutter_infra_release/releases/${FLUTTER_CHANNEL}/linux/flutter_linux_${FLUTTER_VERSION}.tar.xz -o flutter.tar.xz \
-  && tar xf flutter.tar.xz \
-  && rm flutter.tar.xz \
-  && git config --global --add safe.directory ${FLUTTER_DIR}/flutter \
-  && chown -R ${DOCKER_USER}:${DOCKER_USER} ${FLUTTER_DIR}/flutter \
+  && curl https://storage.googleapis.com/flutter_infra_release/releases/${FLUTTER_CHANNEL}/linux/flutter_linux_${FLUTTER_VERSION}.tar.xz -o ${DOCKER_USER}.tar.xz \
+  && mv ${DOCKER_USER}.tar.xz ${FLUTTER_DIR} \
+  && cd ${FLUTTER_DIR} \
+  && tar xf ${DOCKER_USER}.tar.xz \
+  && rm ${DOCKER_USER}.tar.xz \
+  && git config --global --add safe.directory ${FLUTTER_DIR}/${DOCKER_USER} \
+  && chown -R ${DOCKER_USER}:${DOCKER_USER} ${FLUTTER_DIR}/${DOCKER_USER} \
   && apt-get autoremove \
   && apt-get autoclean
 
