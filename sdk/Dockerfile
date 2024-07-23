@@ -25,14 +25,15 @@ RUN set -eux; apt-get update && apt-get upgrade -y \
   && curl https://storage.googleapis.com/flutter_infra_release/releases/${FLUTTER_CHANNEL}/linux/flutter_linux_${FLUTTER_VERSION}.tar.xz -o flutter.tar.xz \
   && tar xf flutter.tar.xz \
   && rm flutter.tar.xz \
-  && chown -R ${DOCKER_USER}:${DOCKER_USER} ${FLUTTER_DIR} \
+  && git config --global --add safe.directory ${FLUTTER_DIR}/flutter \
+  && chown -R ${DOCKER_USER}:${DOCKER_USER} ${FLUTTER_DIR}/flutter \
   && apt-get autoremove \
   && apt-get autoclean
+
+USER ${DOCKER_USER}
 
 RUN set -eux; yes | flutter doctor --android-licenses \
   && flutter config --no-analytics \
   && flutter doctor -v
-
-USER ${DOCKER_USER}
 
 CMD ["flutter"]
