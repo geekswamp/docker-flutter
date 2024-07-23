@@ -9,14 +9,16 @@ LABEL org.opencontainers.image.source https://github.com/arifai/docker-flutter
 LABEL org.opencontainers.image.description Flutter Docker image on Ubuntu Linux
 LABEL org.opencontainers.image.licenses MIT
 
-ENV DOCKER_USER root
-ENV FLUTTER_DIR /home/${DOCKER_USER}
-ENV PATH "$PATH:$FLUTTER_DIR/flutter/bin"
+ENV DOCKER_USER flutter
 
+ENV FLUTTER_DIR /home/flutter-sdk
+RUN set -eux; mkdir -p ${FLUTTER_DIR}
+
+ENV PATH "$PATH:$FLUTTER_DIR/flutter/bin"
 WORKDIR ${FLUTTER_DIR}
 
-# RUN set -eux; groupadd -r ${DOCKER_USER} \
-#   && useradd -r -g ${DOCKER_USER} ${DOCKER_USER}
+RUN set -eux; groupadd -r ${DOCKER_USER} \
+  && useradd -r -g ${DOCKER_USER} ${DOCKER_USER}
 
 RUN set -eux; apt-get update && apt-get upgrade -y \ 
   && apt-get install clang cmake ninja-build pkg-config libgtk-3-dev -y --no-install-recommends \
@@ -27,10 +29,10 @@ RUN set -eux; apt-get update && apt-get upgrade -y \
   && apt-get autoremove \
   && apt-get autoclean
 
-USER ${DOCKER_USER}
-
 RUN set -eux; yes | flutter doctor --android-licenses \
   && flutter config --no-analytics \
   && flutter doctor -v
+
+USER ${DOCKER_USER}
 
 CMD ["flutter"]
