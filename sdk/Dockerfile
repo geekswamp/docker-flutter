@@ -11,6 +11,8 @@ LABEL org.opencontainers.image.licenses MIT
 
 ENV DOCKER_USER flutter
 ENV FLUTTER_DIR /home/${DOCKER_USER}
+
+RUN set -eux; mkdir -p ${FLUTTER_DIR}
 ENV PATH "$PATH:$FLUTTER_DIR/flutter/bin"
 
 RUN set -eux; groupadd -r ${DOCKER_USER} \
