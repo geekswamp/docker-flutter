@@ -31,8 +31,7 @@ WORKDIR ${FLUTTER_DIR}
 
 RUN curl https://storage.googleapis.com/flutter_infra_release/releases/${FLUTTER_CHANNEL}/linux/flutter_linux_${FLUTTER_VERSION}.tar.xz -o flutter.tar.xz \
     && tar xf flutter.tar.xz \
-    && rm flutter.tar.xz \
-    && git config --global --add safe.directory ${FLUTTER_DIR}/flutter
+    && rm flutter.tar.xz
 
 RUN flutter config --no-analytics \
     && yes | flutter doctor --android-licenses \
