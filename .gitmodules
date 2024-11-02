@@ -1,6 +1,6 @@
 [submodule "docker-android-sdk"]
 	path = docker-android-sdk
-	url = git@github.com:arifai/docker-android-sdk.git
+	url = git@github.com:geekswamp/docker-android-sdk.git
 [submodule "flutter-sdk-action"]
 	path = flutter-sdk-action
-	url = git@github.com:arifai/flutter-sdk-action.git
+	url = git@github.com:geekswamp/flutter-sdk-action.git
