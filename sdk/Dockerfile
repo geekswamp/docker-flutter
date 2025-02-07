@@ -20,8 +20,8 @@ RUN set -eux; apt-get update && apt-get upgrade -y \
         ninja-build \
         pkg-config \
         libgtk-3-dev \
-    && apt-get autoremove \
-    && apt-get autoclean
+    && apt-get autoremove -y \
+    && apt-get autoclean -y
 
 RUN git config --global --add safe.directory /home/flutter/flutter
 RUN chown -R flutter:flutter ${FLUTTER_DIR}
